@@ -14,9 +14,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+ //   return $request->user();
+//});
 
 // todos API endpoints.
 
@@ -24,3 +24,8 @@ Route::get('/todo','TodoController@all');
 Route::post('/todo','TodoController@store');
 Route::put('/todo/{id}','TodoController@update');
 Route::delete('/todo/{id}','TodoController@destroy');
+
+// user API endpoints.
+
+Route::post('/register','UserController@register');
+Route::post('/login','UserController@login');

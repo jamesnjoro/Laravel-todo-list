@@ -40,15 +40,12 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         // creating a new task
-
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'description' => 'required',
             'userID' => 'required',
         ]);
         
-        if($validator->fails()){
-            return Response()->JSON(['message'=>'Enter all fields']);
-        }
+       
         $todo = Todo::create($request->all());
         
         return Response()->JSON([
