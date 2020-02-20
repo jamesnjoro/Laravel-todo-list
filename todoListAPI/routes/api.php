@@ -20,10 +20,10 @@ use Illuminate\Http\Request;
 
 // todos API endpoints.
 
-Route::get('/todo','TodoController@all');
-Route::post('/todo','TodoController@store');
-Route::put('/todo/{id}','TodoController@update');
-Route::delete('/todo/{id}','TodoController@destroy');
+Route::get('/todo','TodoController@all')->middleware('auth:api');
+Route::post('/todo','TodoController@store')->middleware('auth:api');
+Route::put('/todo/{id}','TodoController@update')->middleware('auth:api');
+Route::delete('/todo/{id}','TodoController@destroy')->middleware('auth:api');
 
 // user API endpoints.
 

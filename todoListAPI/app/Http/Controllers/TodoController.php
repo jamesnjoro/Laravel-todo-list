@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
+use App\User;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
@@ -16,8 +17,9 @@ class TodoController extends Controller
     public function all()
     {
         // Return all the todo for the user in the Database.
-        $todos = Todo::all();
-
+        $user = auth()->user();
+        $userID = $user['id'];
+        $todos = Todo::where('userID',$userID)->get();
         return Response()->JSON($todos);
     }
 
@@ -42,11 +44,15 @@ class TodoController extends Controller
         // creating a new task
         $request->validate([
             'description' => 'required',
-            'userID' => 'required',
         ]);
         
-       
-        $todo = Todo::create($request->all());
+        $authUser= auth()->user();
+        $userID = $authUser['id']; 
+
+        $post = $request->all();
+        $post['userID'] = $userID;
+
+        $todo = Todo::create($post);
         
         return Response()->JSON([
             'message' => 'Todo created',
