@@ -24,7 +24,7 @@ class UserController extends Controller
         return Response()->JSON([
             "User" => $user,
             "Token" => $accessToken
-        ]);
+        ],200);
 
 
     }
@@ -36,9 +36,9 @@ class UserController extends Controller
         ]);
 
         if(!auth()->attempt($validatedData)){
-            return Response([
+            return Response()->JSON([
                 "message" => "Invalid credentials"
-            ]);
+            ],401);
         }
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
@@ -46,6 +46,6 @@ class UserController extends Controller
         return Response()->JSON([
             "user" => auth()->user(),
             "Token" => $accessToken
-        ]);
+        ],200);
     }
 }

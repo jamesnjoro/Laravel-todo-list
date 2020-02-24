@@ -7,23 +7,23 @@
                     </div>
             </div>
             <div class="card-body">
-                <form action="">
+                <form action="" @submit.prevent='login'>
                         <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInputGroup">Email</label>
+                                <label class="sr-only" for="email">Email</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-envelope"></i></div>
                                 </div>
-                                <input type="email" class="form-control" id="inlineFormInputGroup" placeholder="Email">
+                                <input type="email" class="form-control" id="email" placeholder="Email" v-model="email">
                             </div>
                         </div>
                         <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInputGroup">Password</label>
+                                <label class="sr-only" for="password">Password</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-lock"></i></div>
                                 </div>
-                                <input type="password" class="form-control" id="inlineFormInputGroup" placeholder="Password">
+                                <input type="password" class="form-control" id="password" placeholder="Password" v-model="password">
                             </div>
                         </div>
                         <div class="col-auto">
@@ -38,7 +38,24 @@
 </template>
 <script>
 export default {
-    
+    name:'login',
+    data(){
+        return{
+            email:'',
+            password:''
+        }
+    },
+    methods:{
+        login(){
+            this.$store.dispatch('retrieveToken',{
+                email:this.email,
+                password:this.password
+            })
+            .then(response =>{
+                this.$router.push({name: 'home'})
+            })
+        }
+    }
 }
 </script>
     <style>

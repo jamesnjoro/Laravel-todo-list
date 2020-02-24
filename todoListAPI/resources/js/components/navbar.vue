@@ -3,14 +3,20 @@
             <a href="#" class="navbar-brand"><h2>TODO LIST</h2></a>
             <div class="navbar-right ">
                 <span class="side">Username</span>
-                <span class="side">Logout</span>
+                <span @click="logout" class="side">Logout</span>
             </div>
 
         </nav>
 </template>
 <script>
 export default {
-    
+    name: 'navbar',
+    methods:{
+        logout(){
+            this.$store.dispatch('destroyToken');
+            this.$router.push({name:'login'})
+        }
+    }
 }
 </script>
 <style>

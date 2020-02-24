@@ -3,36 +3,36 @@
        <div class="card shadow p-3 mb-5 bg-white rounded mn">
             <div class="card-header">
                     <div class="d-flex justify-content-start">
-                            <span id="hd"> USER LOGIN </span>
+                            <span id="hd"> REGISTER USER </span>
                     </div>
             </div>
             <div class="card-body">
-                <form action="">
+                <form action="" @submit.prevent="register">
                         <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                <label class="sr-only" for="username">Username</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                                 </div>
-                                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username">
+                                <input type="text" class="form-control" id="username" placeholder="Username" v-model="username">
                             </div>
                         </div>
                         <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInputGroup">Email</label>
+                                <label class="sr-only" for="email">Email</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-envelope"></i></div>
                                 </div>
-                                <input type="email" class="form-control" id="inlineFormInputGroup" placeholder="Email">
+                                <input type="email" class="form-control" id="email" placeholder="Email" v-model="email">
                             </div>
                         </div>
                         <div class="col-auto">
-                                <label class="sr-only" for="inlineFormInputGroup">Password</label>
+                                <label class="sr-only" for="password">Password</label>
                             <div class="input-group mb-2">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-lock"></i></div>
                                 </div>
-                                <input type="password" class="form-control" id="inlineFormInputGroup" placeholder="Password">
+                                <input type="password" class="form-control" id="password" placeholder="Password" v-model="password">
                             </div>
                         </div>
                         <div class="col-auto">
@@ -47,7 +47,26 @@
 </template>
 <script>
 export default {
-    
+    name: "register",
+    data(){
+        return{
+            username:"",
+            email:"",
+            password:""
+        }
+    },
+    methods:{
+        register(){
+            this.$store.dispatch('register',{
+                name:this.username,
+                email:this.email,
+                password:this.password
+            })
+            .then(response =>{
+                this.$router.push({name: 'home'})
+            })
+        }
+    }
 }
 </script>
     <style>
