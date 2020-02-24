@@ -11,35 +11,24 @@
         </div>
         <div class="card shadow p-3 mb-5 bg-white rounded mn">
                 <div class="card-header ">
-                    <div class="Htwo"><h4>TALLY</h4></div>
-                    <div class="d-flex justify-content-end">
-                            <span id="count"> x out of y completed</span>
-                    </div>
-                    <div class="progress" style="height: 2px;">
-                            <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    <div class="Htwo"><h4>Todos</h4></div>
                 </div>
                 <div class="card-body"> 
                     <table class="table">
                         <tbody>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
-                                <td>Take out the trash</td>
-                                <td colspan="2"><span class="icon"><i class="far fa-edit"></i></span> <span class="icon"><i class="far fa-trash-alt"></i></span></td>
+                            <tr v-for="todo in todos" :key="todo.id">
+                                <td><input class="form-check-input" @click="editDTodo(todo)" type="checkbox" value="" id="completed" v-model="todo.completed"></td>
+                                <td><input type="text" @keyup.enter="editDesTodo(todo)" class="form-control-plaintext" v-bind:class="{completed:todo.completed}" v-model="todo.description"></td>
+                                <td colspan="2"><span class="icon"><i @click="deleteTodo(todo)" id="edit" class="far fa-trash-alt"></i></span></td>
                             </tr>
-                            <tr>
-                                    <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1"></td>
-                                    <td>Tell Albert to behave</td>
-                                    <td colspan="2"><span class="icon"><i class="far fa-edit"></i></span> <span class="icon"><i class="far fa-trash-alt"></i></span></td>
-                                </tr>
                         </tbody>
                     </table>
                 </div>
-                <form action="">
+                <form action="" @submit.prevent="newTD">
                     <div class="form-group row">
-                            <label for="staticEmail" class=" col-2 col-sm-2 col-md-1 col-lg-1 col-xl-1 col-form-label"><span id="add"><i class="fas fa-plus"></i></span></label>
+                            <label for="newTodo" class=" col-2 col-sm-2 col-md-1 col-lg-1 col-xl-1 col-form-label"><span id="add"><i @click="newTD" class="fas fa-plus"></i></span></label>
                             <div class="col-9 col-sm-9 col-md-11  col-lg-9 col-xl-9 ">
-                                <input type="text" class="form-control" id="staticEmail">
+                                <input type="text" class="form-control" id="newTodo" v-model="newTodo" >
                             </div>
                     </div>
                    
@@ -50,7 +39,91 @@
 </template>
 <script>
 export default {
-    
+    name: "todolist",
+    data(){
+        return{
+            newTodo:'',
+            todos:[],
+            todo:{
+                description:'',
+                id:'',
+                completed:''
+            },
+            id:'',
+           
+
+        }
+    },
+    created(){
+        this.getTodos()
+       
+        
+        
+    },
+    methods:{
+        
+
+        editDesTodo(todo){
+            this.$store.dispatch('editDesTodo',{
+                description:todo.description,
+                id:todo.id
+            })
+            .then(response =>{
+                this.getTodos()
+            })
+             .catch(error =>{
+                console.log(error)
+            })
+        },
+        getTodos(){
+            this.$store.dispatch('retrieveTodos')
+        .then(response=>{
+            this.todos = response.data;
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+        },
+
+        newTD(){
+            this.$store.dispatch('addTodo',{
+                description:this.newTodo,
+            })
+            .then(response =>{
+                this.getTodos()
+            })
+            .catch(error =>{
+                console.log(error)
+            })
+
+            this.newTodo = ''
+        }, 
+
+        deleteTodo(todo){
+            this.$store.dispatch('deleTodo',{
+                id:todo.id,
+            })
+            .then(response =>{
+                this.getTodos()
+            })
+             .catch(error =>{
+                console.log(error)
+            })
+        },
+        editDTodo(todo){
+            this.$store.dispatch('editDTodo',{
+                completed:todo.completed,
+                id:todo.id
+            })
+            .then(response =>{
+                this.getTodos()
+            })
+             .catch(error =>{
+                console.log(error)
+            })
+        }
+    }
+
 }
 </script>
     <style>
@@ -70,6 +143,14 @@ export default {
         }
         #add{
             padding-left: 30px;
+            cursor: pointer;
+        }
+        #edit{
+            cursor: pointer;
+        }
+         .completed{
+            color: rgb(164, 226, 164);
+            text-decoration: line-through;
         }
         
 
@@ -104,6 +185,7 @@ export default {
 @media only screen and (min-width: 1200px) {
   .mn{
       width: 80%;
+      margin: auto;
   }
 }
         

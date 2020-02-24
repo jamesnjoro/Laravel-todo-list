@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-2 d-flex sb">Register</button>
-                                <span> or login</span>
+                                <span id="reg" @click="redirect()"> or login</span>
                         </div>
                 </form>
                     
@@ -56,6 +56,9 @@ export default {
         }
     },
     methods:{
+        redirect(){
+            this.$router.push({name: 'login'})
+        },
         register(){
             this.$store.dispatch('register',{
                 name:this.username,
@@ -69,7 +72,7 @@ export default {
     }
 }
 </script>
-    <style>
+    <style scoped>
 
         .mn{
             margin-top: 15%;
@@ -79,7 +82,13 @@ export default {
         .sb{
             margin-top: 40px;
         }
-
+        #reg{
+            cursor: pointer;
+        }
+        #reg:hover{
+            color: blue;
+            text-decoration: underline
+        }
         
             /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {

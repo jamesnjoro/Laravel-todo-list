@@ -4,16 +4,27 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+
+
 const storeData = new Vuex.Store({
     state: {
-        token:localStorage.getItem('Token') || null
+        token:localStorage.getItem('Token') || null,
+
+        Todos: null,
     },
     getters:{
         loggedIn(state){
             return state.token != null
-        }
+        },
+        getTodos(state){
+            return state.Todos
+        },
     },
     mutations: {
+        retrievedTodos(state,Todos){
+            state.Todos = Todos
+        },
+
         retrievedToken(state,token){
             state.token = token
         },
@@ -22,7 +33,101 @@ const storeData = new Vuex.Store({
         }
     },
     actions: {
-        
+        editDesTodo(context,data){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+            return new Promise((resolve,reject)=>{
+                axios.put('http://127.0.0.1:8000/api/todo/' + data.id,{
+                    description: data.description
+                })
+                .then(response =>{
+                    console.log(response.data)
+                    resolve(response)
+                })
+                .catch(error =>{
+                    console.log(error)
+                    reject(error);
+                })
+            })
+        },
+        editDTodo(context,data){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+            return new Promise((resolve,reject)=>{
+                switch(data.completed){
+                    case 1:
+                        var comp = 0;
+                        break;
+                    case 0:
+                        var comp = 1;
+                        break;
+                    case true:
+                        var comp = 0;
+                        break;
+                    case false:
+                        var comp = 1
+                        break;
+                }
+                
+
+                axios.put('http://127.0.0.1:8000/api/todo/' + data.id,{
+                    completed: comp
+                })
+                .then(response =>{
+                    console.log(response.data)
+                    resolve(response)
+                })
+                .catch(error =>{
+                    console.log(error)
+                    reject(error);
+                })
+            })
+        },
+        deleTodo(context,data){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+            return new Promise((resolve,reject)=>{
+                axios.delete('http://127.0.0.1:8000/api/todo/' + data.id,{
+                })
+                .then(response =>{
+                    console.log(response.data)
+                    resolve(response)
+                })
+                .catch(error =>{
+                    console.log(error)
+                    reject(error);
+                })
+            })
+        },
+        addTodo(context,data){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+            return new Promise((resolve,reject)=>{
+                axios.post('http://127.0.0.1:8000/api/todo',{
+                    description:data.description
+                })
+                .then(response =>{
+                    console.log(response.data)
+                    resolve(response)
+                })
+                .catch(error =>{
+                    console.log(error)
+                    reject(error);
+                })
+            })
+        },
+
+        retrieveTodos(context){
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+            return new Promise((resolve,reject)=>{
+                axios.get('http://127.0.0.1:8000/api/todo')
+                .then(response =>{
+                    context.commit('retrievedTodos', response.data)
+                    console.log(response.data)
+                    resolve(response)
+                })
+                .catch(error =>{
+                    console.log(error)
+                    reject(error);
+                })
+            })
+        },
         register(context,data){
             return new Promise((resolve,reject)=>{
                 axios.post('http://127.0.0.1:8000/api/register',{

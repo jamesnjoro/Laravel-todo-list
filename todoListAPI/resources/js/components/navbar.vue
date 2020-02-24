@@ -2,8 +2,7 @@
     <nav class="navbar navbar-light bg-light">
             <a href="#" class="navbar-brand"><h2>TODO LIST</h2></a>
             <div class="navbar-right ">
-                <span class="side">Username</span>
-                <span @click="logout" class="side">Logout</span>
+                <button type="button" @click="logout" class="btn btn-secondary side">Logout</button>
             </div>
 
         </nav>
