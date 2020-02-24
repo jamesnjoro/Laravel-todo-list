@@ -20855,6 +20855,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var baseUrl = 'http://127.0.0.1:8000/api/';
 var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     token: localStorage.getItem('Token') || null,
@@ -20883,7 +20884,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     editDesTodo: function editDesTodo(context, data) {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('http://127.0.0.1:8000/api/todo/' + data.id, {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put(baseUrl + 'todo/' + data.id, {
           description: data.description
         }).then(function (response) {
           console.log(response.data);
@@ -20915,7 +20916,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
             break;
         }
 
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('http://127.0.0.1:8000/api/todo/' + data.id, {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put(baseUrl + 'todo/' + data.id, {
           completed: comp
         }).then(function (response) {
           console.log(response.data);
@@ -20929,7 +20930,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     deleTodo: function deleTodo(context, data) {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]('http://127.0.0.1:8000/api/todo/' + data.id, {}).then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"](baseUrl + 'todo/' + data.id, {}).then(function (response) {
           console.log(response.data);
           resolve(response);
         })["catch"](function (error) {
@@ -20941,7 +20942,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     addTodo: function addTodo(context, data) {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://127.0.0.1:8000/api/todo', {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(baseUrl + 'todo', {
           description: data.description
         }).then(function (response) {
           console.log(response.data);
@@ -20955,7 +20956,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     retrieveTodos: function retrieveTodos(context) {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://127.0.0.1:8000/api/todo').then(function (response) {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(baseUrl + 'todo').then(function (response) {
           context.commit('retrievedTodos', response.data);
           console.log(response.data);
           resolve(response);
@@ -20967,7 +20968,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     register: function register(context, data) {
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://127.0.0.1:8000/api/register', {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(baseUrl + 'register', {
           name: data.name,
           email: data.email,
           password: data.password
@@ -20984,7 +20985,7 @@ var storeData = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     retrieveToken: function retrieveToken(context, credentials) {
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://127.0.0.1:8000/api/login', {
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(baseUrl + 'login', {
           email: credentials.email,
           password: credentials.password
         }).then(function (response) {

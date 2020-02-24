@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-
+const baseUrl = 'http://127.0.0.1:8000/api/';
 
 const storeData = new Vuex.Store({
     state: {
@@ -36,7 +36,7 @@ const storeData = new Vuex.Store({
         editDesTodo(context,data){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
             return new Promise((resolve,reject)=>{
-                axios.put('http://127.0.0.1:8000/api/todo/' + data.id,{
+                axios.put(baseUrl + 'todo/' + data.id,{
                     description: data.description
                 })
                 .then(response =>{
@@ -68,7 +68,7 @@ const storeData = new Vuex.Store({
                 }
                 
 
-                axios.put('http://127.0.0.1:8000/api/todo/' + data.id,{
+                axios.put(baseUrl + 'todo/' + data.id,{
                     completed: comp
                 })
                 .then(response =>{
@@ -84,7 +84,7 @@ const storeData = new Vuex.Store({
         deleTodo(context,data){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
             return new Promise((resolve,reject)=>{
-                axios.delete('http://127.0.0.1:8000/api/todo/' + data.id,{
+                axios.delete(baseUrl + 'todo/' + data.id,{
                 })
                 .then(response =>{
                     console.log(response.data)
@@ -99,7 +99,7 @@ const storeData = new Vuex.Store({
         addTodo(context,data){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
             return new Promise((resolve,reject)=>{
-                axios.post('http://127.0.0.1:8000/api/todo',{
+                axios.post(baseUrl + 'todo',{
                     description:data.description
                 })
                 .then(response =>{
@@ -116,7 +116,7 @@ const storeData = new Vuex.Store({
         retrieveTodos(context){
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
             return new Promise((resolve,reject)=>{
-                axios.get('http://127.0.0.1:8000/api/todo')
+                axios.get(baseUrl + 'todo')
                 .then(response =>{
                     context.commit('retrievedTodos', response.data)
                     console.log(response.data)
@@ -130,7 +130,7 @@ const storeData = new Vuex.Store({
         },
         register(context,data){
             return new Promise((resolve,reject)=>{
-                axios.post('http://127.0.0.1:8000/api/register',{
+                axios.post(baseUrl + 'register',{
                    name: data.name,
                    email: data.email,
                    password: data.password
@@ -150,7 +150,7 @@ const storeData = new Vuex.Store({
        retrieveToken(context, credentials){
 
         return new Promise((resolve,reject)=>{
-            axios.post('http://127.0.0.1:8000/api/login',{
+            axios.post(baseUrl + 'login',{
                email: credentials.email,
                password: credentials.password
            })
